@@ -33,7 +33,7 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & Ow
 	auto NextIndex = (Index + 1) % PatrolPoints.Num();
 	BlackboardComp->SetValueAsInt(IndexKey.SelectedKeyName, NextIndex);
 
-	UE_LOG(LogTemp, Warning, TEXT("Waypoint index: %i"), Index);
+	//UE_LOG(LogTemp, Warning, TEXT("Waypoint index: %i"), Index);
 
 	return EBTNodeResult::Succeeded;
 }
