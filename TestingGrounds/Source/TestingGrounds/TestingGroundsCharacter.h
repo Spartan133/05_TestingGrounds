@@ -122,6 +122,9 @@ protected:
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	
+	void OnFire();
+	
 	// End of APawn interface
 
 	/* 
