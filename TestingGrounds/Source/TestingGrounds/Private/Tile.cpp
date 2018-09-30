@@ -4,6 +4,7 @@
 #include "WorldCollision.h"
 #include "DrawDebugHelpers.h"
 #include "ActorPool.h"
+#include "AI/Navigation/NavigationSystem.h"
 
 
 // Sets default values
@@ -14,12 +15,13 @@ ATile::ATile()
 
 	MinExtent = FVector(0, -2000, 0);
 	MaxExtent = FVector(4000, 2000, 0);
-
+	NavigationBoundsOffset = FVector(2000, 0, 0);
 }
 
 
 void ATile::SetPool(UActorPool * InPool)
 {
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(InPool->GetName()));
 	Pool = InPool;
 
 	PositionNavMeshBoundsVolume();
@@ -35,7 +37,9 @@ void ATile::PositionNavMeshBoundsVolume()
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("[%s] Checked Out: {%s}"), *GetName(), *NavMeshBoundsVolume->GetName());
-	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
+	GetWorld()->GetNavigationSystem()->Build();
+	
 }
 
 
@@ -96,6 +100,7 @@ void ATile::BeginPlay()
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// Return the NavMeshBoundsVolume to the Poll
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Checked In: {%s}"), *GetName(), *NavMeshBoundsVolume->GetName());
 	Pool->CheckIn(NavMeshBoundsVolume);
 }
 
